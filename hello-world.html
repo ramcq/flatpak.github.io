@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Hello World
+    </title>
+    <meta content='text/html; charset=UTF8' http-equiv='content-type'>
+    <meta content='Create a Flatpak application in five minutes.' name='description'>
+    <meta content='bundle,application,runtime,flatpak,xdg-app' name='keywords'>
+    <meta content='width=device-width,initial-scale=1' name='viewport'>
+    <link href='img/favicon.png' rel='icon' type='image/png'>
+    <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+    <link href='img/favicon57.png' rel='apple-touch-icon' sizes='57x57'>
+    <link href='img/favicon152.png' rel='apple-touch-icon' sizes='152x152'>
+    <link href="stylesheets/fonts.css" rel="stylesheet" />
+    <link href="stylesheets/site.css" rel="stylesheet" />
+    <link href="stylesheets/animate.css" rel="stylesheet" />
+    <!-- = stylesheet_link_tag "http://overpass-30e2.kxcdn.com/overpass.css" -->
+  </head>
+  <script src="javascripts/jquery-2.2.4.min.js"></script>
+  <script src="javascripts/jquery.easing.min.js"></script>
+  <script src="javascripts/jquery.toc.min.js"></script>
+  <script src="javascripts/bootstrap.js"></script>
+  <script src="javascripts/all.js"></script>
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-68811788-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <body id='page-top'>
+    <nav class='navbar navbar-default navbar-fixed-top' id='mainNav'>
+      <div class='container-fluid'>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class='navbar-header'>
+          <button class='navbar-toggle collapsed' data-target='#bs-example-navbar-collapse-1' data-toggle='collapse' type='button'>
+            <span class='sr-only'>Toggle navigation</span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+          </button>
+          <a class="navbar-brand page-scroll" href="./">Flatpak</a>
+        </div>
+        <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
+          <ul class='nav navbar-nav navbar-right'>
+            <li>
+              <a href='/index.html#features'>Features</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="getting.html">Get Flatpak</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="apps.html">Applications</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="hello-world.html">Hello World</a>
+            </li>
+            <li>
+              <a class="page-scroll" href="faq.html">FAQ</a>
+            </li>
+            <li>
+              <a href='/index.html#about'>About & Contact</a>
+            </li>
+          </ul>
+          <!-- /.navbar-collapse -->
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </nav>
+  </body>
+  <section class=""><div class="container"><div class="row"><div class="col-lg-10 col-lg-offset-1">
+  <h1>Hello World</h1>
+  
+  <p>Developers can quickly get started using the tutorial below. More detailed information is available in the <a href="http://docs.flatpak.org/">Flatpak developer documentation</a>.</p>
+  
+  <h2>1. Install Flatpak</h2>
+  
+  <p>First we need to install Flatpak itself. The instructions here are for Fedora or Ubuntu. Details for other distros can be found on the <a href="getting.html">getting Flatpak page</a>.</p>
+  
+  <p>If you are using Fedora, run:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>sudo dnf install flatpak</pre>
+  
+  <p>On Ubuntu, Flatpak is available through a PPA. To install it, run:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>sudo add-apt-repository ppa:alexlarsson/flatpak&#x000A;<span class="unselectable">$ </span>sudo apt update&#x000A;<span class="unselectable">$ </span>sudo apt install flatpak</pre>
+  
+  <h2>2. Install a runtime</h2>
+  
+  <p>Flatpak requires every app to specify a runtime that it uses for its dependencies. We&#39;ll use the GNOME 3.22 development platform runtime for this. To install the runtime, we first need to add the repository that provides it. Run:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>flatpak remote-add --from gnome https://sdk.gnome.org/gnome.flatpakrepo</pre>
+  
+  <p>And then install the runtime itself:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>flatpak install gnome org.gnome.Platform//3.22</pre>
+          
+  
+  <h2>3. Create your app</h2>
+  
+  <p>First we need to create the directory structure for the app:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>mkdir hello&#x000A;<span class="unselectable">$ </span>mkdir hello/files&#x000A;<span class="unselectable">$ </span>mkdir hello/files/bin&#x000A;<span class="unselectable">$ </span>mkdir hello/export</pre>
+  
+  <p>Now let&#39;s add something simple: create a file in <code>hello/files/bin/</code> called <code>hello.sh</code>. Then add the following to the file and save it:</p>
+  
+  <pre>&#x000A;#!/bin/sh&#x000A;echo "Hello world, from a sandbox"</pre>
+  
+  <p>Now we need to provide some information about the application. In Flatpak this is specified in a key-value file called <code>metadata</code>, which goes in the <code>hello</code> directory.</p>
+  
+  <p>For a simple app this doesn&#39;t contain much, so we can create it manually:</p>
+  
+  <pre>&#x000A;[Application]&#x000A;name=org.test.Hello&#x000A;runtime=org.gnome.Platform/x86_64/3.22&#x000A;command=hello.sh</pre>
+  
+  <p>This specifies the application identifier (<code>org.test.Hello</code>) as well as the runtime the application uses and the command to start the app with.</p>
+  
+  <h2>4. Put the app in a repository</h2>
+  
+  <p>Congratulations, you&#39;ve made an app! To be able to install it, you need to put it in a repository. This is done with the build-export command. From the parent of the <code>hello</code> directory, run:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>flatpak build-export repo hello</pre>
+  
+  <p>This will initialize a local repository in the &quot;repo&quot; directory and export the app to it.</p>
+  
+  <h2>5. Install</h2>
+  
+  <p>Now we&#39;re ready to add the repository that was just created and install the app. This is done with two commands:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>flatpak --user remote-add --no-gpg-verify tutorial-repo repo&#x000A;<span class="unselectable">$ </span>flatpak --user install tutorial-repo org.test.Hello</pre>
+  
+  <p>This will install the remote and the app in the user&#39;s home directory due to the <code>--user</code> argument. This is useful for test builds and other local things.</p>
+  
+  <h2>6. Run</h2>
+  
+  <p>All that&#39;s left is to run the app. This can be done with:</p>
+  
+  <pre>&#x000A;<span class="unselectable">$ </span>flatpak run org.test.Hello</pre>
+  
+  <p>This will print <code>Hello world, from a sandbox</code>.</p>
+  
+  <p>Ta da! That&#39;s it: you&#39;ve successfully built, installed and run your first Flatpak. Many of these steps are simplified by Flatpak&#39;s built in tools. For information on how to use them, as well as how to build and distribute more complex apps see the <a href="http://docs.flatpak.org/">developer documentation</a>.</p>
+  </div></div></div></section>
+  <section class='bg-black' id='footer'>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-lg-3 col-lg-offset-1 col-sm-3 hidden-xs'>
+          <a class='navbar-brand page-scroll' href='#page-top'>
+            <img title="Flatpak" class="full" src="img/logo.svg" />
+          </a>
+        </div>
+        <ul class='col-lg-7 col-lg-offset-0 col-sm-8 col-sm-offset-0 col-xs-7 col-xs-offset-2'>
+          <li class='toplevel'>
+            <a href="./">Home</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class='page-scroll' href='/index.html#features'>Features</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="getting.html">Get Flatpak</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="apps.html">Applications</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="command-line.html">Command Line</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="hello-world.html">Hello World</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="http://docs.flatpak.org/">Developer Docs</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="runtimes.html">Runtimes</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="/press">Press</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class="page-scroll" href="faq.html">FAQ</a>
+          </li>
+          <li class='toplevel'>
+            <!-- id links on index page -->
+            <a class='page-scroll' href='/index.html#about'>About & Contact</a>
+          </li>
+        </ul>
+        <div class='col-lg-1 col-sm-1 col-xs-1'>
+          <a href="https://twitter.com/FlatpakApps">
+          <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+          <svg
+             xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:cc="http://creativecommons.org/ns#"
+             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:svg="http://www.w3.org/2000/svg"
+             xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 32 32"
+             height="32"
+             width="32"
+             xml:space="preserve"
+             version="1.1"
+             id="svg7466"><metadata
+               id="metadata7472"><rdf:RDF><cc:Work
+                   rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+                     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+               id="defs7470" /><g
+               transform="matrix(1.25,0,0,-1.25,0,31.999997)"
+               id="g7474"><g
+                 style="fill:#888a85"
+                 transform="matrix(0.01061022,0,0,0.01061022,2.4158526,3.6660266)"
+                 id="twitterbird"><path
+                   id="path7478"
+                   style="fill:#888a85;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                   d="m 2000,1432.96 c -73.58,-32.64 -152.67,-54.69 -235.66,-64.61 84.7,50.78 149.77,131.19 180.41,227.01 -79.29,-47.03 -167.1,-81.17 -260.57,-99.57 -74.84,79.75 -181.48,129.57 -299.5,129.57 -226.6,0 -410.328,-183.71 -410.328,-410.31 0,-32.16 3.628,-63.48 10.625,-93.51 -341.016,17.11 -643.368,180.47 -845.739,428.72 -35.324,-60.6 -55.5583,-131.09 -55.5583,-206.29 0,-142.36 72.4373,-267.95 182.5433,-341.53 -67.262,2.13 -130.535,20.59 -185.8519,51.32 -0.0391,-1.71 -0.0391,-3.42 -0.0391,-5.16 0,-198.803 141.441,-364.635 329.145,-402.342 -34.426,-9.375 -70.676,-14.395 -108.098,-14.395 -26.441,0 -52.145,2.578 -77.203,7.364 C 276.391,476.219 427.926,357.578 607.48,354.281 467.051,244.219 290.129,178.621 97.8828,178.621 64.7617,178.621 32.0977,180.57 0,184.359 181.586,67.9414 397.27,0 628.988,0 1383.72,0 1796.45,625.238 1796.45,1167.47 c 0,17.79 -0.41,35.48 -1.2,53.08 80.18,57.86 149.74,130.12 204.75,212.41" /></g></g></svg>
+          </a>
+          <style>
+            #twitterbird path { transition: fill 400ms ease-in-out; }
+            #twitterbird path:hover { fill: #fff !important; }
+          </style>
+        </div>
+      </div>
+    </div>
+  </section>
+</html>
